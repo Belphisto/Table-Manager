@@ -1,0 +1,17 @@
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\bin\Debug\net6.0-windows\Table_Manager.exe
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\bin\Debug\net6.0-windows\Table_Manager.deps.json
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\bin\Debug\net6.0-windows\Table_Manager.runtimeconfig.json
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\bin\Debug\net6.0-windows\Table_Manager.dll
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\bin\Debug\net6.0-windows\Table_Manager.pdb
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\obj\Debug\net6.0-windows\Table_Manager.csproj.AssemblyReference.cache
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\obj\Debug\net6.0-windows\Table_Manager.Form1.resources
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\obj\Debug\net6.0-windows\Table_Manager.csproj.GenerateResource.cache
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\obj\Debug\net6.0-windows\Table_Manager.GeneratedMSBuildEditorConfig.editorconfig
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\obj\Debug\net6.0-windows\Table_Manager.AssemblyInfoInputs.cache
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\obj\Debug\net6.0-windows\Table_Manager.AssemblyInfo.cs
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\obj\Debug\net6.0-windows\Table_Manager.csproj.CoreCompileInputs.cache
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\obj\Debug\net6.0-windows\Table_Manager.dll
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\obj\Debug\net6.0-windows\refint\Table_Manager.dll
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\obj\Debug\net6.0-windows\Table_Manager.pdb
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\obj\Debug\net6.0-windows\Table_Manager.genruntimeconfig.cache
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\obj\Debug\net6.0-windows\ref\Table_Manager.dll
