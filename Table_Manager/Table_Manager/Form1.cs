@@ -1,16 +1,37 @@
+
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
+
+
+using System.Data.Common;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using Text = DocumentFormat.OpenXml.Wordprocessing.Text;
+using Run = DocumentFormat.OpenXml.Wordprocessing.Run;
+
 namespace Table_Manager
 {
     public partial class Form1 : Form
     {
+        public static Person Rec;
+        string saveFileName = "";
+
         private List<Person> persons;
 
         public Form1()
         {
             InitializeComponent();
-        }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
+            DeleteToolStripButton.Click += DeleteToolStripMenuItem1_Click;
+            EditToolStripButton.Click += EditToolStripMenuItem_Click;
+            AddToolStripButton.Click += AddToolStripMenuItem_Click;
+
+            CreateToolStripButton.Click += CreateToolStripMenuItem1_Click;
+            SaveToolStripButton.Click += SaveToolStripMenuItem1_Click;
+            OpenToolStripButton.Click += OpenToolStripMenuItem1_Click;
+
             // Инициализация списка данными
             persons = new List<Person>
             {
@@ -21,16 +42,12 @@ namespace Table_Manager
                 new Person("Беллатриса Лестрейндж", new DateTime(1951, 7, 18), "Волшебник", "Пожиратели смерти", 650000),
             };
 
-            // Программное назначение свойств для DataGridView
-            dataGridView1.AutoGenerateColumns = true;
-            dataGridView1.DataSource = persons;
+            Redraw();
+        }
 
-            // Программное добавление заголовков колонок
-            dataGridView1.Columns["Name"].HeaderText = "Имя";
-            dataGridView1.Columns["BirthDate"].HeaderText = "Дата рождения";
-            dataGridView1.Columns["Position"].HeaderText = "Должность";
-            dataGridView1.Columns["Department"].HeaderText = "Отдел";
-            dataGridView1.Columns["Salary"].HeaderText = "Оклад";
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            Redraw();
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -51,6 +68,266 @@ namespace Table_Manager
                 "Целевая платформа: .Net 6.0 (долгосрочная поддержка)\n\n" +
                 "Выполнила: Мария Анталеева\n" +
                 "Группа: ЭУ-239", "О проекте");
+        }
+
+        private void AddToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogAdd Dialog = new DialogAdd();
+            Dialog.ShowDialog();
+
+            if (Dialog.DialogResult == DialogResult.OK)
+            {
+                persons.Add(Rec);
+                Redraw();
+            }
+        }
+
+        public void Redraw()
+        {
+            dataGridView1.DataSource = null;
+
+            // Программное назначение свойств для DataGridView
+            dataGridView1.AutoGenerateColumns = true;
+            dataGridView1.DataSource = persons;
+
+            // Программное добавление заголовков колонок
+            dataGridView1.Columns["Name"].HeaderText = "Имя";
+            dataGridView1.Columns["BirthDate"].HeaderText = "Дата рождения";
+            dataGridView1.Columns["Position"].HeaderText = "Должность";
+            dataGridView1.Columns["Department"].HeaderText = "Отдел";
+            dataGridView1.Columns["Salary"].HeaderText = "Оклад";
+        }
+
+        private void EditToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int current = dataGridView1.CurrentRow.Index;
+            Rec = persons[current];
+            // Передача текущей записи в диалог изменения
+            DialogChange dialog = new DialogChange();
+
+            dialog.ShowDialog();
+            if (dialog.DialogResult == DialogResult.OK)
+            {
+                // Обновление записи в таблице
+                persons[current] = Rec; // Метод GetRecord возвращает измененную запись из диалога
+
+                // Обновление DataGridView
+                Redraw();
+            }
+
+        }
+
+        private void DeleteToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            int current = dataGridView1.CurrentRow.Index;
+            Person Rec = persons[current];
+            var result = MessageBox.Show("Попытка удалить запись" + Rec.ToString(), "Удаление",
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            // Обработка выбора пользователя
+            if (result == DialogResult.OK)
+            {
+                // Удаление записи из таблицы
+                persons.RemoveAt(current);
+
+                // Обновление DataGridView
+                Redraw();
+            }
+        }
+
+        private void OpenToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                // Получаем имя выбранного файла
+                string fileName = openFileDialog1.FileName;
+
+                // Создаем объект StreamReader для чтения файла
+                using (StreamReader sr = new StreamReader(fileName))
+                {
+                    // Очищаем существующие данные
+                    persons.Clear();
+
+                    // Читаем файл построчно и добавляем данные в список
+                    while (!sr.EndOfStream)
+                    {
+                        string record = sr.ReadLine();
+                        Person worker = Person.Parse(record);
+                        persons.Add(worker);
+                    }
+                    saveFileName = fileName + ".txt";
+
+                    // Обновляем отображение данных
+                    Redraw();
+                }
+            }
+        }
+
+        private void SaveToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (saveFileName == "")
+            {
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                    Save();
+            }
+            else
+                Save();
+        }
+
+        private void SaveAsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.FileName = saveFileName;
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                Save();
+
+        }
+
+        private void Save()
+        {
+            // Создаем объект StreamWriter для записи в файл
+            using (StreamWriter sw = new StreamWriter(saveFileDialog1.FileName))
+            {
+                // Записываем каждую запись в файл
+                foreach (Person worker in persons)
+                {
+                    sw.WriteLine(worker.Compose());
+                }
+            }
+            saveFileName = saveFileDialog1.FileName + ".txt";
+            MessageBox.Show("Данные сохранены успешно", "Сохранение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void CreateToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (!TableIsEmpty())
+            {
+                DialogResult result = MessageBox.Show("Сохранить текущие данные в файл?", "Сохранение", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
+                if (result == DialogResult.Yes)
+                {
+                    SaveToolStripMenuItem1_Click(sender, e);
+                    persons.Clear();
+                    Redraw();
+                    saveFileName = "";
+                }
+                else if (result == DialogResult.No)
+                {
+                    saveFileName = "";
+                    persons.Clear();
+                    Redraw();
+                }
+
+            }
+        }
+
+        private bool TableIsEmpty()
+        {
+            if (persons.Count == 0) return true;
+            else return false;
+        }
+
+        private void exelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (persons.Count != 0)
+            {
+                SaveFileDialog saveExelFileDialog = new SaveFileDialog();
+                saveExelFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
+                if (saveExelFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    ExportToExel(saveExelFileDialog.FileName);
+                    MessageBox.Show("Данные импортированы в Excel", "Импорт", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Файл не выбран. Импорт не удался", "Импорт", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            else MessageBox.Show("Таблица пуста. Импорт не удался", "Импорт", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+
+        }
+
+        private void ExportToExel(string fileName)
+        {
+            using (var spreadsheetDocument = SpreadsheetDocument.Create($"{fileName}", SpreadsheetDocumentType.Workbook))
+            {
+                // Add a WorkbookPart to the document
+                var workbookpart = spreadsheetDocument.AddWorkbookPart();
+                workbookpart.Workbook = new Workbook();
+
+                // Add a WorksheetPart to the WorkbookPart
+                var worksheetPart = workbookpart.AddNewPart<WorksheetPart>();
+                worksheetPart.Worksheet = new Worksheet(new SheetData());
+
+                // Add Sheets to the Workbook
+                var sheets = spreadsheetDocument.WorkbookPart.Workbook.AppendChild<Sheets>(new Sheets());
+                sheets.Append(new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = "Sheet1" });
+
+                // Get the SheetData from the worksheet
+                var sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
+
+                // Add header row
+                var headerRow = new Row();
+                headerRow.Append(
+                    new Cell { CellValue = new CellValue("Name"), DataType = CellValues.String },
+                    new Cell { CellValue = new CellValue("BirthDate"), DataType = CellValues.String },
+                    new Cell { CellValue = new CellValue("Position"), DataType = CellValues.String },
+                    new Cell { CellValue = new CellValue("Department"), DataType = CellValues.String },
+                    new Cell { CellValue = new CellValue("Salary"), DataType = CellValues.String }
+                );
+                sheetData.AppendChild(headerRow);
+
+                // Add data rows
+                foreach (Person person in persons)
+                {
+                    var dataRow = new Row();
+                    dataRow.Append(
+                        new Cell { CellValue = new CellValue(person.Name), DataType = CellValues.String },
+                        new Cell { CellValue = new CellValue(person.BirthDate.ToString()), DataType = CellValues.String },
+                        new Cell { CellValue = new CellValue(person.Position), DataType = CellValues.String },
+                        new Cell { CellValue = new CellValue(person.Department), DataType = CellValues.String },
+                        new Cell { CellValue = new CellValue(person.Salary.ToString()), DataType = CellValues.String }
+                    );
+                    sheetData.AppendChild(dataRow);
+                }
+            }
+        }
+
+        private void wordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (persons.Count != 0)
+            {
+                SaveFileDialog saveWordFileDialog = new SaveFileDialog();
+                saveWordFileDialog.Filter = "Word Files (*.docx)|*.docx|All files (*.*)|*.*";
+                if (saveWordFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    ExportToWord(saveWordFileDialog.FileName);
+                    MessageBox.Show("Данные импортированы в Word", "Импорт", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Файл не выбран. Импорт не удался", "Импорт", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            else MessageBox.Show("Таблица пуста. Импорт не удался", "Импорт", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void ExportToWord(string fileName)
+        {
+            using (WordprocessingDocument wordDocument = WordprocessingDocument.Create($"{fileName}", WordprocessingDocumentType.Document))
+            {
+                // Add a main document part
+                MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
+                mainPart.Document = new Document();
+                var body = mainPart.Document.AppendChild(new Body());
+
+                // Add paragraphs to the body
+                foreach (Person person in persons)
+                {
+                    var paragraph = body.AppendChild(new Paragraph());
+                    paragraph.AppendChild(new Run(new Text(person.ToString())));
+                }
+            }
         }
     }
 }

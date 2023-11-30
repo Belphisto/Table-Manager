@@ -64,7 +64,21 @@ namespace Table_Manager
         // Перегрузка метода ToString
         public override string ToString()
         {
-            return $"Имя: {_name}, Дата рождения: {_birthDate.ToShortDateString()}, Должность: {_post}, Отдел: {_department}, Оклад: {_salary:C}";
+            return $"Имя: {_name}, Дата рождения: {_birthDate.ToShortDateString()}, Должность: {_post}, Отдел: {_department}, Оклад: {_salary:C}\n";
+        }
+
+        // Метод для композиции объекта Person в строку
+        public string Compose()
+        {
+            return $"{_name},{_birthDate.ToShortDateString()},{_post},{_department},{_salary:C}";
+        }
+
+        // Метод для парсинга строки и создания объекта Person
+        public static Person Parse(string record)
+        {
+            string[] fields = record.Split(',');
+            Person worker = new Person(fields[0], Convert.ToDateTime(fields[1]), fields[2], fields[3], Convert.ToDecimal(fields[4]));
+            return worker;
         }
     }
 }
