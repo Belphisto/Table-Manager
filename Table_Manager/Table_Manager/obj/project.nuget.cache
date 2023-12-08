@@ -1,8 +1,25 @@
 {
   "version": 2,
-  "dgSpecHash": "shunuMq1CmUPx9fTwgaGnuePp46OvHd9xJUbSp75Qjg/95+xCxdu2XKNuOeXiKBUf3I4Sh1J+tP5iYr0XUM97Q==",
+  "dgSpecHash": "m3vZI2tHeapEeFB3LMhzvOYuT1XzDZ9iiqU2r8kOJoQKivlwxxFRd8uIK6sIp6kp55t4pH2d4eBYExhSW6D9tQ==",
   "success": true,
   "projectFilePath": "E:\\Лена документы\\GitHub\\Table-Manager\\Table_Manager\\Table_Manager\\Table_Manager.csproj",
-  "expectedPackageFiles": [],
-  "logs": []
+  "expectedPackageFiles": [
+    "C:\\Users\\b\\.nuget\\packages\\documentformat.openxml\\3.0.0\\documentformat.openxml.3.0.0.nupkg.sha512",
+    "C:\\Users\\b\\.nuget\\packages\\documentformat.openxml.framework\\3.0.0\\documentformat.openxml.framework.3.0.0.nupkg.sha512",
+    "C:\\Users\\b\\.nuget\\packages\\microsoft.office.interop.excel\\15.0.4795.1001\\microsoft.office.interop.excel.15.0.4795.1001.nupkg.sha512",
+    "C:\\Users\\b\\.nuget\\packages\\microsoft.office.interop.word\\12.0.4518.1014\\microsoft.office.interop.word.12.0.4518.1014.nupkg.sha512",
+    "C:\\Users\\b\\.nuget\\packages\\system.io.packaging\\8.0.0\\system.io.packaging.8.0.0.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Пакет \"Microsoft.Office.Interop.Word 12.0.4518.1014\" был восстановлен с помощью \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\", а не целевой платформы проекта \"net6.0-windows7.0\". Этот пакет может быть не полностью совместим с вашим проектом.",
+      "libraryId": "Microsoft.Office.Interop.Word",
+      "targetGraphs": [
+        "net6.0-windows7.0"
+      ]
+    }
+  ]
 }

@@ -35,3 +35,4 @@ E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\
 E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\bin\Debug\net6.0-windows\DocumentFormat.OpenXml.dll
 E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\bin\Debug\net6.0-windows\DocumentFormat.OpenXml.Framework.dll
 E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\bin\Debug\net6.0-windows\System.IO.Packaging.dll
+E:\Лена документы\GitHub\Table-Manager\Table_Manager\Table_Manager\obj\Debug\net6.0-windows\Table_Manager.UserChoose.resources

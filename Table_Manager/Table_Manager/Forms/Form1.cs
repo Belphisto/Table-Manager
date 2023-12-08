@@ -4,12 +4,17 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 
+using Microsoft.VisualBasic;
+
 
 using System.Data.Common;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using Text = DocumentFormat.OpenXml.Wordprocessing.Text;
 using Run = DocumentFormat.OpenXml.Wordprocessing.Run;
+using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Office2013.Word;
+using System.Linq.Expressions;
 
 namespace Table_Manager
 {
@@ -52,14 +57,20 @@ namespace Table_Manager
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Получение номера текущей записи
-            int currentRow = dataGridView1.CurrentRow.Index;
+            try
+            {
+                // Получение номера текущей записи
+                int currentRow = dataGridView1.CurrentRow.Index;
 
-            // Извлечение данных из таблицы по номеру
-            Person selectedPerson = persons[currentRow];
+                // Извлечение данных из таблицы по номеру
+                Person selectedPerson = persons[currentRow];
 
-            // Отображение данных в текстовом поле
-            CurrentRowTextBox.Text = selectedPerson.ToString();
+                // Отображение данных в текстовом поле
+                CurrentRowTextBox.Text = selectedPerson.ToString();
+            }
+            catch(System.ArgumentOutOfRangeException ex) { }
+            
+            
         }
 
         private void AboutProgramToolStripMenuItem_Click(object sender, EventArgs e)
@@ -85,6 +96,7 @@ namespace Table_Manager
         public void Redraw()
         {
             dataGridView1.DataSource = null;
+            dataGridView1.Columns.Clear();
 
             // Программное назначение свойств для DataGridView
             dataGridView1.AutoGenerateColumns = true;
@@ -96,6 +108,53 @@ namespace Table_Manager
             dataGridView1.Columns["Position"].HeaderText = "Должность";
             dataGridView1.Columns["Department"].HeaderText = "Отдел";
             dataGridView1.Columns["Salary"].HeaderText = "Оклад";
+        }
+
+        public void Redraw(List<Person> people)
+        {
+            dataGridView1.DataSource = null;
+            dataGridView1.Columns.Clear();
+
+            // Программное назначение свойств для DataGridView
+            dataGridView1.AutoGenerateColumns = true;
+            dataGridView1.DataSource = people;
+
+            // Программное добавление заголовков колонок
+            dataGridView1.Columns["Name"].HeaderText = "Имя";
+            dataGridView1.Columns["BirthDate"].HeaderText = "Дата рождения";
+            dataGridView1.Columns["Position"].HeaderText = "Должность";
+            dataGridView1.Columns["Department"].HeaderText = "Отдел";
+            dataGridView1.Columns["Salary"].HeaderText = "Оклад";
+        }
+
+        public void Redraw(IEnumerable<IGrouping<string, Person>> persons)
+        {
+            dataGridView1.DataSource = null;
+
+            // Программное назначение свойств для DataGridView
+            dataGridView1.AutoGenerateColumns = true;
+            //dataGridView1.DataSource = persons;
+
+            // Программное добавление заголовков колонок
+            dataGridView1.Columns.Add("Name", "Имя");
+            dataGridView1.Columns.Add("BirthDate", "Дата рождения");
+            dataGridView1.Columns.Add("Position", "Должность");
+            dataGridView1.Columns.Add("Salary", "Оклад");
+
+            // Проход по группам и добавление их в DataGridView
+            foreach (var group in persons)
+            {
+                // group.Key - это отдел
+                // group.ToList() - это список сотрудников в данном отделе
+
+                // добавление заголовка группы
+                dataGridView1.Rows.Add($"Отдел: {group.Key}");
+
+                foreach (var person in group)
+                {
+                    dataGridView1.Rows.Add(person.Name, person.BirthDate, person.Position, person.Salary);
+                }
+            }
         }
 
         private void EditToolStripMenuItem_Click(object sender, EventArgs e)
@@ -328,6 +387,126 @@ namespace Table_Manager
                     paragraph.AppendChild(new Run(new Text(person.ToString())));
                 }
             }
+        }
+
+        private void ShowAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Redraw();
+        }
+
+        private bool CheckUserInput(string criteri, out string userInput)
+        {
+            // Вызываем InputBox для ввода строки
+            userInput = Interaction.InputBox($"Введите {criteri}", $"Поиск сотрудника по {criteri}", "Поиск");
+
+            // Check if the user pressed "Cancel" or entered an empty string
+            if (string.IsNullOrEmpty(userInput))
+            {
+                return false;  // Do nothing if the user canceled or entered an empty string
+            }
+            else return true;
+        }
+
+        private void FindFioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CheckUserInput("фио", out string userInput))
+            {
+                List<Person> resultByFullName = LinqPerson.FindByFio(persons, userInput);
+                Redraw(resultByFullName);
+            }
+        }
+
+        private void FindPositionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var positions = LinqPerson.GetPosition(persons);
+            UserChoose choosePosition = new UserChoose(positions);
+            if (choosePosition.ShowDialog() == DialogResult.OK)
+            {
+                string userInput = choosePosition.selected;
+                List<Person> result = LinqPerson.FindByPosition(persons, userInput);
+                Redraw(result);
+                
+            }
+            else return;
+        }
+
+        private void FindDepartmentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var departments = LinqPerson.GetDepartment(persons);
+            UserChoose chooseDepartment = new UserChoose(departments);
+            if (chooseDepartment.ShowDialog() == DialogResult.OK)
+            {
+                string userInput = chooseDepartment.selected;
+                List<Person> result = LinqPerson.FindByDepartment(persons, userInput);
+                Redraw(result);
+            }
+            else return;
+        }
+
+        private void Under30YearsOldToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var result = LinqPerson.Under30YearOld(persons);
+            Redraw(result);
+        }
+
+        private void Under30YearsOldAndPositionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var positions = LinqPerson.GetPosition(persons);
+            UserChoose choosePosition = new UserChoose(positions);
+            if (choosePosition.ShowDialog() == DialogResult.OK)
+            {
+                string userInput = choosePosition.selected;
+                List<Person> result = LinqPerson.Under30YearOld(persons, userInput);
+                Redraw(result);
+            }
+            else return;
+        }
+
+        private void TomorrowBirthdToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<Person> result = LinqPerson.TommorowBirthd(persons);
+            Redraw(result);
+        }
+
+        private void AverageSalaryByDepartmentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var departments = LinqPerson.GetDepartment(persons);
+            UserChoose chooseDepartment = new UserChoose(departments);
+            if (chooseDepartment.ShowDialog() == DialogResult.OK)
+            {
+                string userInput = chooseDepartment.selected;
+                MessageBox.Show(LinqPerson.AverageSalaryByDepartment(persons, userInput));
+            }
+            else return;
+        }
+
+        private void LessAverageSalaryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<Person> result = LinqPerson.LessAverageSalary(persons);
+            Redraw(result);
+        }
+
+        private void AverageSalaryByAllDepartmentsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(LinqPerson.AvarageSalaryByDepartments(persons));
+        }
+
+        private void SortByNameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var result = LinqPerson.SortByName(persons);
+            Redraw(result);
+        }
+
+        private void SortBySalaryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var result = LinqPerson.SortBySalary(persons);
+            Redraw(result);
+        }
+
+        private void GroupByDepartmentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var groupedByDepartment = LinqPerson.GroupByDepartment(persons);
+            Redraw(groupedByDepartment);
         }
     }
 }

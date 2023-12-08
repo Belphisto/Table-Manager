@@ -58,6 +58,23 @@
             настройкиToolStripMenuItem1 = new ToolStripMenuItem();
             параметрыToolStripMenuItem1 = new ToolStripMenuItem();
             операцииСДаннымиToolStripMenuItem = new ToolStripMenuItem();
+            поискСотрудникаToolStripMenuItem = new ToolStripMenuItem();
+            поФамилииToolStripMenuItem = new ToolStripMenuItem();
+            поДолжностиToolStripMenuItem = new ToolStripMenuItem();
+            поОтделуToolStripMenuItem = new ToolStripMenuItem();
+            поискСотрудниковПоToolStripMenuItem = new ToolStripMenuItem();
+            всеСотрудникиМоложе30тиЛетToolStripMenuItem = new ToolStripMenuItem();
+            всеСотрудникиМоложе30тиПоУказаннойДолжностиToolStripMenuItem = new ToolStripMenuItem();
+            деньРожденияЗавтраToolStripMenuItem = new ToolStripMenuItem();
+            отсортироватьПоToolStripMenuItem = new ToolStripMenuItem();
+            средняяЗпПоОтделуToolStripMenuItem = new ToolStripMenuItem();
+            зпНижеСреднейToolStripMenuItem = new ToolStripMenuItem();
+            средняяЗпПоОтделамToolStripMenuItem = new ToolStripMenuItem();
+            сортировкаПоToolStripMenuItem = new ToolStripMenuItem();
+            имениToolStripMenuItem = new ToolStripMenuItem();
+            окладуToolStripMenuItem = new ToolStripMenuItem();
+            группировкаПоОтделамToolStripMenuItem = new ToolStripMenuItem();
+            показатьВсехToolStripMenuItem = new ToolStripMenuItem();
             справкаToolStripMenuItem = new ToolStripMenuItem();
             toolStripSeparator5 = new ToolStripSeparator();
             AboutProgramToolStripMenuItem = new ToolStripMenuItem();
@@ -315,9 +332,129 @@
             // 
             // операцииСДаннымиToolStripMenuItem
             // 
+            операцииСДаннымиToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { поискСотрудникаToolStripMenuItem, поискСотрудниковПоToolStripMenuItem, отсортироватьПоToolStripMenuItem, сортировкаПоToolStripMenuItem, группировкаПоОтделамToolStripMenuItem, показатьВсехToolStripMenuItem });
             операцииСДаннымиToolStripMenuItem.Name = "операцииСДаннымиToolStripMenuItem";
             операцииСДаннымиToolStripMenuItem.Size = new Size(138, 20);
             операцииСДаннымиToolStripMenuItem.Text = "&Операции с данными";
+            // 
+            // поискСотрудникаToolStripMenuItem
+            // 
+            поискСотрудникаToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { поФамилииToolStripMenuItem, поДолжностиToolStripMenuItem, поОтделуToolStripMenuItem });
+            поискСотрудникаToolStripMenuItem.Name = "поискСотрудникаToolStripMenuItem";
+            поискСотрудникаToolStripMenuItem.Size = new Size(228, 22);
+            поискСотрудникаToolStripMenuItem.Text = "Поиск сотрудника";
+            // 
+            // поФамилииToolStripMenuItem
+            // 
+            поФамилииToolStripMenuItem.Name = "поФамилииToolStripMenuItem";
+            поФамилииToolStripMenuItem.Size = new Size(152, 22);
+            поФамилииToolStripMenuItem.Text = "по фамилии";
+            поФамилииToolStripMenuItem.Click += FindFioToolStripMenuItem_Click;
+            // 
+            // поДолжностиToolStripMenuItem
+            // 
+            поДолжностиToolStripMenuItem.Name = "поДолжностиToolStripMenuItem";
+            поДолжностиToolStripMenuItem.Size = new Size(152, 22);
+            поДолжностиToolStripMenuItem.Text = "по должности";
+            поДолжностиToolStripMenuItem.Click += FindPositionToolStripMenuItem_Click;
+            // 
+            // поОтделуToolStripMenuItem
+            // 
+            поОтделуToolStripMenuItem.Name = "поОтделуToolStripMenuItem";
+            поОтделуToolStripMenuItem.Size = new Size(152, 22);
+            поОтделуToolStripMenuItem.Text = "по отделу";
+            поОтделуToolStripMenuItem.Click += FindDepartmentToolStripMenuItem_Click;
+            // 
+            // поискСотрудниковПоToolStripMenuItem
+            // 
+            поискСотрудниковПоToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { всеСотрудникиМоложе30тиЛетToolStripMenuItem, всеСотрудникиМоложе30тиПоУказаннойДолжностиToolStripMenuItem, деньРожденияЗавтраToolStripMenuItem });
+            поискСотрудниковПоToolStripMenuItem.Name = "поискСотрудниковПоToolStripMenuItem";
+            поискСотрудниковПоToolStripMenuItem.Size = new Size(228, 22);
+            поискСотрудниковПоToolStripMenuItem.Text = "Поиск сотрудников  по дате";
+            // 
+            // всеСотрудникиМоложе30тиЛетToolStripMenuItem
+            // 
+            всеСотрудникиМоложе30тиЛетToolStripMenuItem.Name = "всеСотрудникиМоложе30тиЛетToolStripMenuItem";
+            всеСотрудникиМоложе30тиЛетToolStripMenuItem.Size = new Size(306, 22);
+            всеСотрудникиМоложе30тиЛетToolStripMenuItem.Text = " моложе 30-ти лет";
+            всеСотрудникиМоложе30тиЛетToolStripMenuItem.Click += Under30YearsOldToolStripMenuItem_Click;
+            // 
+            // всеСотрудникиМоложе30тиПоУказаннойДолжностиToolStripMenuItem
+            // 
+            всеСотрудникиМоложе30тиПоУказаннойДолжностиToolStripMenuItem.Name = "всеСотрудникиМоложе30тиПоУказаннойДолжностиToolStripMenuItem";
+            всеСотрудникиМоложе30тиПоУказаннойДолжностиToolStripMenuItem.Size = new Size(306, 22);
+            всеСотрудникиМоложе30тиПоУказаннойДолжностиToolStripMenuItem.Text = "моложе 30-ти лет и указанной должности";
+            всеСотрудникиМоложе30тиПоУказаннойДолжностиToolStripMenuItem.Click += Under30YearsOldAndPositionToolStripMenuItem_Click;
+            // 
+            // деньРожденияЗавтраToolStripMenuItem
+            // 
+            деньРожденияЗавтраToolStripMenuItem.Name = "деньРожденияЗавтраToolStripMenuItem";
+            деньРожденияЗавтраToolStripMenuItem.Size = new Size(306, 22);
+            деньРожденияЗавтраToolStripMenuItem.Text = "день рождения завтра";
+            деньРожденияЗавтраToolStripMenuItem.Click += TomorrowBirthdToolStripMenuItem_Click;
+            // 
+            // отсортироватьПоToolStripMenuItem
+            // 
+            отсортироватьПоToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { средняяЗпПоОтделуToolStripMenuItem, зпНижеСреднейToolStripMenuItem, средняяЗпПоОтделамToolStripMenuItem });
+            отсортироватьПоToolStripMenuItem.Name = "отсортироватьПоToolStripMenuItem";
+            отсортироватьПоToolStripMenuItem.Size = new Size(228, 22);
+            отсортироватьПоToolStripMenuItem.Text = "Поиск по окладу";
+            // 
+            // средняяЗпПоОтделуToolStripMenuItem
+            // 
+            средняяЗпПоОтделуToolStripMenuItem.Name = "средняяЗпПоОтделуToolStripMenuItem";
+            средняяЗпПоОтделуToolStripMenuItem.Size = new Size(204, 22);
+            средняяЗпПоОтделуToolStripMenuItem.Text = "средняя з/п по отделу";
+            средняяЗпПоОтделуToolStripMenuItem.Click += AverageSalaryByDepartmentToolStripMenuItem_Click;
+            // 
+            // зпНижеСреднейToolStripMenuItem
+            // 
+            зпНижеСреднейToolStripMenuItem.Name = "зпНижеСреднейToolStripMenuItem";
+            зпНижеСреднейToolStripMenuItem.Size = new Size(204, 22);
+            зпНижеСреднейToolStripMenuItem.Text = "з/п ниже средней";
+            зпНижеСреднейToolStripMenuItem.Click += LessAverageSalaryToolStripMenuItem_Click;
+            // 
+            // средняяЗпПоОтделамToolStripMenuItem
+            // 
+            средняяЗпПоОтделамToolStripMenuItem.Name = "средняяЗпПоОтделамToolStripMenuItem";
+            средняяЗпПоОтделамToolStripMenuItem.Size = new Size(204, 22);
+            средняяЗпПоОтделамToolStripMenuItem.Text = "средняя з/п по отделам";
+            средняяЗпПоОтделамToolStripMenuItem.Click += AverageSalaryByAllDepartmentsToolStripMenuItem_Click;
+            // 
+            // сортировкаПоToolStripMenuItem
+            // 
+            сортировкаПоToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { имениToolStripMenuItem, окладуToolStripMenuItem });
+            сортировкаПоToolStripMenuItem.Name = "сортировкаПоToolStripMenuItem";
+            сортировкаПоToolStripMenuItem.Size = new Size(228, 22);
+            сортировкаПоToolStripMenuItem.Text = "Сортировка по...";
+            // 
+            // имениToolStripMenuItem
+            // 
+            имениToolStripMenuItem.Name = "имениToolStripMenuItem";
+            имениToolStripMenuItem.Size = new Size(180, 22);
+            имениToolStripMenuItem.Text = "имени";
+            имениToolStripMenuItem.Click += SortByNameToolStripMenuItem_Click;
+            // 
+            // окладуToolStripMenuItem
+            // 
+            окладуToolStripMenuItem.Name = "окладуToolStripMenuItem";
+            окладуToolStripMenuItem.Size = new Size(180, 22);
+            окладуToolStripMenuItem.Text = "окладу";
+            окладуToolStripMenuItem.Click += SortBySalaryToolStripMenuItem_Click;
+            // 
+            // группировкаПоОтделамToolStripMenuItem
+            // 
+            группировкаПоОтделамToolStripMenuItem.Name = "группировкаПоОтделамToolStripMenuItem";
+            группировкаПоОтделамToolStripMenuItem.Size = new Size(228, 22);
+            группировкаПоОтделамToolStripMenuItem.Text = "Группировка по отделам";
+            группировкаПоОтделамToolStripMenuItem.Click += GroupByDepartmentToolStripMenuItem_Click;
+            // 
+            // показатьВсехToolStripMenuItem
+            // 
+            показатьВсехToolStripMenuItem.Name = "показатьВсехToolStripMenuItem";
+            показатьВсехToolStripMenuItem.Size = new Size(228, 22);
+            показатьВсехToolStripMenuItem.Text = "Показать всех";
+            показатьВсехToolStripMenuItem.Click += ShowAllToolStripMenuItem_Click;
             // 
             // справкаToolStripMenuItem
             // 
@@ -716,5 +853,22 @@
         private ToolStripSeparator toolStripSeparator14;
         private ToolStripSeparator toolStripSeparator15;
         private SaveFileDialog saveFileDialog1;
+        private ToolStripMenuItem поискСотрудникаToolStripMenuItem;
+        private ToolStripMenuItem поФамилииToolStripMenuItem;
+        private ToolStripMenuItem поДолжностиToolStripMenuItem;
+        private ToolStripMenuItem поОтделуToolStripMenuItem;
+        private ToolStripMenuItem отсортироватьПоToolStripMenuItem;
+        private ToolStripMenuItem поискСотрудниковПоToolStripMenuItem;
+        private ToolStripMenuItem всеСотрудникиМоложе30тиЛетToolStripMenuItem;
+        private ToolStripMenuItem всеСотрудникиМоложе30тиПоУказаннойДолжностиToolStripMenuItem;
+        private ToolStripMenuItem деньРожденияЗавтраToolStripMenuItem;
+        private ToolStripMenuItem средняяЗпПоОтделуToolStripMenuItem;
+        private ToolStripMenuItem зпНижеСреднейToolStripMenuItem;
+        private ToolStripMenuItem средняяЗпПоОтделамToolStripMenuItem;
+        private ToolStripMenuItem сортировкаПоToolStripMenuItem;
+        private ToolStripMenuItem имениToolStripMenuItem;
+        private ToolStripMenuItem окладуToolStripMenuItem;
+        private ToolStripMenuItem группировкаПоОтделамToolStripMenuItem;
+        private ToolStripMenuItem показатьВсехToolStripMenuItem;
     }
 }
